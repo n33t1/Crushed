@@ -10,6 +10,8 @@ TextureImporter:
     21300006: Horizontal Path
     21300008: Tree
     21300010: Patch
+    21300012: HouseSide
+    21300014: HouseShadow
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -120,12 +122,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 35
-        width: 210
-        height: 134
+        y: 60
+        width: 129
+        height: 109
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 7, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -193,6 +195,34 @@ TextureImporter:
         y: 58
         width: 48
         height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HouseSide
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 32
+        width: 50
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HouseShadow
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 34
+        width: 17
+        height: 83
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

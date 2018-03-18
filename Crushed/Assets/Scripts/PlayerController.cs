@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 	public float spriteChangeDist;
 	private bool canMove;
 	private Rigidbody2D rigidBody;
+	private float health = 100f;
 	//public GameObject bulletPrefab;
 	//public float bulletSpeed = 5f;
 	//public float firingRate = 5f;
@@ -55,13 +56,15 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
+		if (collider.gameObject.tag == "GardenObjects" || collider.gameObject.name == "Girl") {
 			float minYObject = collider.gameObject.transform.position.y - (collider.gameObject.GetComponent<Renderer> ().bounds.size.y) / 2;
 			float minYPlayer = transform.position.y - (GetComponent<Renderer> ().bounds.size.y) / 2;
 			if (minYPlayer < minYObject) {
-				collider.gameObject.transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y, transform.position.z + 1);
+				transform.position = new Vector3 (transform.position.x, transform.position.y, collider.gameObject.transform.position.z - 1);
 			} else {
-				collider.gameObject.transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y, transform.position.z - 1);
+				transform.position = new Vector3 (transform.position.x, transform.position.y, collider.gameObject.transform.position.z + 1);
 			}
+		}
 	}
 
 	private void UpdateVector ()
