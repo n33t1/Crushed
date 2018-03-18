@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
 	public Sprite[] DownMovement;
 	private Vector3 distVector;
 	public float spriteChangeDist;
+	private bool canMove;
+	private Rigidbody2D rigidBody;
 	//public GameObject bulletPrefab;
 	//public float bulletSpeed = 5f;
 	//public float firingRate = 5f;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		canMove = true;
 		lIndex = rIndex = uIndex = dIndex = 0;
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
@@ -32,23 +35,63 @@ public class PlayerController : MonoBehaviour {
 		xmax = rightmost.x - (GetComponent<Renderer>().bounds.size.x)/2;
 		ymin = downmost.y + (GetComponent<Renderer>().bounds.size.y)/2;
 		ymax = upmost.y - (GetComponent<Renderer>().bounds.size.y)/2;
+		rigidBody = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		if (canMove) {
+			Move ();
+		}
+//		if (Input.GetKeyDown (KeyCode.Space)) {
+//			InvokeRepeating ("Fire", 0.00001f, firingRate);
+//		}
+//
+//		if (Input.GetKeyUp (KeyCode.Space)) {
+//			CancelInvoke("Fire");
+//		}
+	}
+
+	void OnTriggerStay2D (Collider2D collider)
+	{
+			float minYObject = collider.gameObject.transform.position.y - (collider.gameObject.GetComponent<Renderer> ().bounds.size.y) / 2;
+			float minYPlayer = transform.position.y - (GetComponent<Renderer> ().bounds.size.y) / 2;
+			if (minYPlayer < minYObject) {
+				collider.gameObject.transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y, transform.position.z + 1);
+			} else {
+				collider.gameObject.transform.position = new Vector3(collider.gameObject.transform.position.x, collider.gameObject.transform.position.y, transform.position.z - 1);
+			}
+	}
+
+	private void UpdateVector ()
+	{
+		distVector = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+	}
+
+	void Move ()
+	{
+		float xInput = Input.GetAxisRaw("Horizontal");
+		float yInput = Input.GetAxisRaw("Vertical");
+
+		Vector3 newPos = new Vector3(xInput, yInput);
+
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			UpdateVector ();
-			lIndex = 0;
+			lIndex++;
+			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
 		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			UpdateVector ();
-			rIndex = 0;
+			rIndex++;
+			if(rIndex >= RightMovement.Length) {rIndex = 0;}
 		} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			UpdateVector ();
-			uIndex = 0;
+			uIndex++;
+			if(uIndex >= UpMovement.Length) {uIndex = 0;}
 		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			UpdateVector ();
-			dIndex = 0;
+			dIndex++;
+			if(dIndex >= DownMovement.Length) {dIndex = 0;}
 		}
 
 
@@ -56,7 +99,6 @@ public class PlayerController : MonoBehaviour {
 
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
-			this.transform.position += Vector3.left * speed * Time.deltaTime;
 			this.GetComponent<SpriteRenderer> ().sprite = LeftMovement [lIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				lIndex++;
@@ -66,7 +108,6 @@ public class PlayerController : MonoBehaviour {
 		} 
 
 		else if (Input.GetKey (KeyCode.RightArrow)) {
-			this.transform.position += Vector3.right * speed * Time.deltaTime;
 			this.GetComponent<SpriteRenderer> ().sprite = RightMovement [rIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				rIndex++;
@@ -76,7 +117,6 @@ public class PlayerController : MonoBehaviour {
 		} 
 
 		else if (Input.GetKey (KeyCode.UpArrow)) {
-			this.transform.position += Vector3.up * speed * Time.deltaTime;
 			this.GetComponent<SpriteRenderer> ().sprite = UpMovement [uIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				uIndex++;
@@ -86,7 +126,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		else if (Input.GetKey (KeyCode.DownArrow)) {
-			this.transform.position += Vector3.down * speed * Time.deltaTime;
 			this.GetComponent<SpriteRenderer> ().sprite = DownMovement [dIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				dIndex++;
@@ -95,27 +134,15 @@ public class PlayerController : MonoBehaviour {
 			if(dIndex >= DownMovement.Length) {dIndex = 0;}
 		}
 
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			InvokeRepeating ("Fire", 0.00001f, firingRate);
-//		}
-//
-//		if (Input.GetKeyUp (KeyCode.Space)) {
-//			CancelInvoke("Fire");
-//		}
 
-		float newX = Mathf.Clamp(this.transform.position.x, xmin, xmax);
-		float newY = Mathf.Clamp(this.transform.position.y, ymin, ymax);
-		transform.position = new Vector3(newX, newY, transform.position.z);
-	}
 
-	private void UpdateVector ()
-	{
-		distVector = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-	}
+		float newX = transform.position.x + newPos.x * speed * Time.deltaTime;
+		newX = Mathf.Clamp(newX, xmin, xmax);
+		float newY = transform.position.y + newPos.y * speed * Time.deltaTime;
+		newY = Mathf.Clamp(newY, ymin, ymax);
 
-	void OnCollisionEnter2D (Collision2D collider)
-	{
-		print("collision");
+		rigidBody.MovePosition(new Vector2(newX, newY));
+
 	}
 
 //	void Fire ()

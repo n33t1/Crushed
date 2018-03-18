@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4192772804902340}
   - component: {fileID: 212125878579395182}
   - component: {fileID: 60169392129138674}
+  - component: {fileID: 61775702847026862}
   m_Layer: 0
   m_Name: Bush1
   m_TagString: Untagged
@@ -34,7 +35,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1678248573091558}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -50,7 +51,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -65,9 +66,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.25, y: -0.2642857}
-      - {x: 0.27142859, y: -0.23571429}
-      - {x: 0.33571428, y: -0.14285715}
+    - - {x: 0.25, y: -0.15212657}
+      - {x: 0.286058, y: -0.1284316}
+      - {x: 0.32108486, y: -0.103845224}
       - {x: 0.33571428, y: 0.007142857}
       - {x: 0.30714285, y: 0.06428572}
       - {x: 0.27142859, y: 0.15714286}
@@ -80,12 +81,37 @@ PolygonCollider2D:
       - {x: -0.30714285, y: 0.07857143}
       - {x: -0.33571428, y: -0.014285714}
       - {x: -0.33571428, y: -0.18571429}
-      - {x: -0.2857143, y: -0.22857143}
-      - {x: -0.25, y: -0.25714287}
-      - {x: -0.20714286, y: -0.2857143}
-      - {x: 0.12142857, y: -0.2857143}
-      - {x: 0.13571429, y: -0.27857143}
-      - {x: 0.20714286, y: -0.2857143}
+      - {x: -0.24670231, y: -0.17005357}
+      - {x: -0.20611155, y: -0.15473662}
+      - {x: -0.05597174, y: -0.1491727}
+      - {x: 0.058034122, y: -0.15404916}
+      - {x: 0.13571429, y: -0.14690629}
+      - {x: 0.23152524, y: -0.14429623}
+--- !u!61 &61775702847026862
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1678248573091558}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.23407125}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.67142856, y: 0.5714286}
+    newSize: {x: 0.67142856, y: 0.5714286}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.67142856, y: 0.09353286}
+  m_EdgeRadius: 0
 --- !u!212 &212125878579395182
 SpriteRenderer:
   m_ObjectHideFlags: 1
