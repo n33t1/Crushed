@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour {
 	public Sprite[] DownMovement;
 	private Vector3 distVector;
 	public float spriteChangeDist;
-	private bool canMove;
+	public bool canMove;
 	private Rigidbody2D rigidBody;
-	private float health = 100f;
+
+	[SerializeField]
+	public Stat Health;
 	//public GameObject bulletPrefab;
 	//public float bulletSpeed = 5f;
 	//public float firingRate = 5f;
@@ -25,7 +27,6 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		canMove = true;
 		lIndex = rIndex = uIndex = dIndex = 0;
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
@@ -42,6 +43,14 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		if (Input.GetKeyDown (KeyCode.Q)) {
+			Health.CurrentHealth -= 10;
+		}
+
+		if (Input.GetKeyDown (KeyCode.E)) {
+			Health.CurrentHealth += 10;
+		}
+
 		if (canMove) {
 			Move ();
 		}
@@ -79,19 +88,19 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 newPos = new Vector3(xInput, yInput);
 
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A)) {
 			UpdateVector ();
 			lIndex++;
 			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+		} else if (Input.GetKeyDown (KeyCode.RightArrow) || Input.GetKeyDown (KeyCode.D)) {
 			UpdateVector ();
 			rIndex++;
 			if(rIndex >= RightMovement.Length) {rIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
+		} else if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W)) {
 			UpdateVector ();
 			uIndex++;
 			if(uIndex >= UpMovement.Length) {uIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
+		} else if (Input.GetKeyDown (KeyCode.DownArrow) || Input.GetKeyDown (KeyCode.S)) {
 			UpdateVector ();
 			dIndex++;
 			if(dIndex >= DownMovement.Length) {dIndex = 0;}
@@ -101,7 +110,7 @@ public class PlayerController : MonoBehaviour {
 
 
 
-		if (Input.GetKey (KeyCode.LeftArrow)) {
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
 			this.GetComponent<SpriteRenderer> ().sprite = LeftMovement [lIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				lIndex++;
@@ -110,7 +119,7 @@ public class PlayerController : MonoBehaviour {
 			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
 		} 
 
-		else if (Input.GetKey (KeyCode.RightArrow)) {
+		else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
 			this.GetComponent<SpriteRenderer> ().sprite = RightMovement [rIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				rIndex++;
@@ -119,7 +128,7 @@ public class PlayerController : MonoBehaviour {
 			if(rIndex >= RightMovement.Length) {rIndex = 0;}
 		} 
 
-		else if (Input.GetKey (KeyCode.UpArrow)) {
+		else if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 			this.GetComponent<SpriteRenderer> ().sprite = UpMovement [uIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				uIndex++;
@@ -128,7 +137,7 @@ public class PlayerController : MonoBehaviour {
 			if(uIndex >= UpMovement.Length) {uIndex = 0;}
 		}
 
-		else if (Input.GetKey (KeyCode.DownArrow)) {
+		else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
 			this.GetComponent<SpriteRenderer> ().sprite = DownMovement [dIndex];
 			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
 				dIndex++;
