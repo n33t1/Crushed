@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - GardenObjects
+  - PlayerBullet
+  - MainPlayer
   layers:
   - Default
   - TransparentFX
@@ -14,10 +16,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - PlayerBullet
+  - EnemyBullet
   - 
   - 
   - 

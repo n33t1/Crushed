@@ -15,15 +15,19 @@ public class PlayerController : MonoBehaviour {
 	public float spriteChangeDist;
 	public bool canMove;
 	private Rigidbody2D rigidBody;
+	private Vector3 newPos;
+
+	private Vector2 moveDirection = new Vector2(1f, 0f);
 
 	[SerializeField]
 	public Stat Health;
-	//public GameObject bulletPrefab;
-	//public float bulletSpeed = 5f;
-	//public float firingRate = 5f;
+
+	public GameObject bulletPrefab;
+	public float bulletSpeed = 5f;
+	public float firingRate = 5f;
 	//public float health = 250f;
 
-	//public AudioClip fireSound;
+	public AudioClip fireSound;
 
 	// Use this for initialization
 	void Start () {
@@ -43,24 +47,18 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			Health.CurrentHealth -= 10;
-		}
-
-		if (Input.GetKeyDown (KeyCode.E)) {
-			Health.CurrentHealth += 10;
-		}
 
 		if (canMove) {
 			Move ();
 		}
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			InvokeRepeating ("Fire", 0.00001f, firingRate);
-//		}
-//
-//		if (Input.GetKeyUp (KeyCode.Space)) {
-//			CancelInvoke("Fire");
-//		}
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			InvokeRepeating ("Fire", 0.00001f, firingRate);
+		}
+
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			CancelInvoke("Fire");
+		}
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
@@ -83,24 +81,31 @@ public class PlayerController : MonoBehaviour {
 
 	void Move ()
 	{
-		float xInput = Input.GetAxisRaw("Horizontal");
-		float yInput = Input.GetAxisRaw("Vertical");
+		float xInput = Input.GetAxisRaw ("Horizontal");
+		float yInput = Input.GetAxisRaw ("Vertical");
 
-		Vector3 newPos = new Vector3(xInput, yInput);
+		if (xInput != 0f && yInput != 0f) {
+			yInput = 0f;
+		}; 
+
+		newPos = new Vector3(xInput, yInput);
 
 		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A)) {
 			UpdateVector ();
 			lIndex++;
 			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.RightArrow) || Input.GetKeyDown (KeyCode.D)) {
+		} 
+		if (Input.GetKeyDown (KeyCode.RightArrow) || Input.GetKeyDown (KeyCode.D)) {
 			UpdateVector ();
 			rIndex++;
 			if(rIndex >= RightMovement.Length) {rIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W)) {
+		} 
+		if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W)) {
 			UpdateVector ();
 			uIndex++;
 			if(uIndex >= UpMovement.Length) {uIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.DownArrow) || Input.GetKeyDown (KeyCode.S)) {
+		} 
+		if (Input.GetKeyDown (KeyCode.DownArrow) || Input.GetKeyDown (KeyCode.S)) {
 			UpdateVector ();
 			dIndex++;
 			if(dIndex >= DownMovement.Length) {dIndex = 0;}
@@ -117,6 +122,7 @@ public class PlayerController : MonoBehaviour {
 				UpdateVector ();
 			}
 			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
+			ChangeDirection(KeyCode.LeftArrow);
 		} 
 
 		else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
@@ -126,6 +132,7 @@ public class PlayerController : MonoBehaviour {
 				UpdateVector ();
 			}
 			if(rIndex >= RightMovement.Length) {rIndex = 0;}
+			ChangeDirection(KeyCode.RightArrow);
 		} 
 
 		else if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
@@ -135,6 +142,7 @@ public class PlayerController : MonoBehaviour {
 				UpdateVector ();
 			}
 			if(uIndex >= UpMovement.Length) {uIndex = 0;}
+			ChangeDirection(KeyCode.UpArrow);
 		}
 
 		else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
@@ -144,6 +152,7 @@ public class PlayerController : MonoBehaviour {
 				UpdateVector ();
 			}
 			if(dIndex >= DownMovement.Length) {dIndex = 0;}
+			ChangeDirection(KeyCode.DownArrow);
 		}
 
 
@@ -157,25 +166,43 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-//	void Fire ()
-//	{
-//		GameObject bullet = Instantiate (bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-//		bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0f, bulletSpeed, 0f);
-//		AudioSource.PlayClipAtPoint(fireSound, transform.position);
-//	}
-//
-//	void OnTriggerEnter2D (Collider2D collider)
-//	{
-//		Debug.Log("Player collided with missile");
-//		PlayerBullet missile = collider.gameObject.GetComponent<PlayerBullet> ();
-//
-//		if (missile) {
-//			health -= missile.GetDamage ();
-//			missile.Hit();
-//		}
-//
-//		if (health <= 0) {
-//			Destroy(this.gameObject);
-//		}
-//	}
+	void Fire ()
+	{
+		if (PlayerBullet.usedBullets < PlayerBullet.maxBullets) {
+			GameObject bullet = Instantiate (bulletPrefab, transform.position, Quaternion.identity) as GameObject;
+			bullet.GetComponent<PlayerBullet> ().originPoint = transform.position;
+			bullet.GetComponent<Rigidbody2D> ().velocity = moveDirection * bulletSpeed;
+			if (moveDirection != Vector2.zero) {
+				float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+				bullet.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+			}
+			AudioSource.PlayClipAtPoint (fireSound, transform.position);
+		}
+	}
+
+	void OnTriggerEnter2D (Collider2D collider)
+	{
+		PlayerBullet missile = collider.gameObject.GetComponent<PlayerBullet> ();
+
+		if (missile) {
+			Health.CurrentHealth -= missile.GetDamage ();
+			missile.Hit();
+		}
+
+		if (Health.CurrentHealth <= 0) {
+			Destroy(this.gameObject);
+		}
+	}
+
+	void ChangeDirection (KeyCode key)
+	{
+		if(key == KeyCode.UpArrow || key == KeyCode.W)			{moveDirection = new Vector2(0f, 1f);}
+
+		else if(key == KeyCode.DownArrow || key == KeyCode.S)	{moveDirection = new Vector2(0f, -1f);}
+
+		else if(key == KeyCode.LeftArrow || key == KeyCode.A)	{moveDirection = new Vector2(-1f, 0f);}
+
+		else if(key == KeyCode.RightArrow || key == KeyCode.D)	{moveDirection = new Vector2(1f, 0f);}
+		
+	}
 }

@@ -155,4 +155,19 @@ public class EnemyController : MonoBehaviour {
 		rigidBody.MovePosition(new Vector2(newX, newY));
 
 	}
+
+	void OnTriggerEnter2D (Collider2D collider)
+	{
+		Debug.Log("Player collided with missile");
+		PlayerBullet missile = collider.gameObject.GetComponent<PlayerBullet> ();
+
+		if (missile) {
+			Health.CurrentHealth -= missile.GetDamage ();
+			missile.Hit();
+		}
+
+		if (Health.CurrentHealth <= 0) {
+			Destroy(this.gameObject);
+		}
+	}
 }

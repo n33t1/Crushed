@@ -7,7 +7,7 @@ using System;
 public class Stat {
 
 	[SerializeField]
-	private BarScript bar;
+	private BarScript healthBar;
 
 	[SerializeField]
 	private float maxHealth = 100f;
@@ -25,7 +25,7 @@ public class Stat {
 		set {
 			
 			this.currentHealth = Mathf.Clamp (value, minHealth, maxHealth);
-			bar.Value = currentHealth;
+			healthBar.Value = currentHealth;
 		}
 	}
 

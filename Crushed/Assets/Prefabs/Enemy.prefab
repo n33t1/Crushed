@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 50758568088701372}
   - component: {fileID: 60060288918572868}
   - component: {fileID: 61767757605827654}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,6 +172,11 @@ MonoBehaviour:
   - {fileID: 21300052, guid: 22c2af54094bd3d41b297c04ed82e42c, type: 3}
   spriteChangeDist: 0.1
   canMove: 1
+  Health:
+    bar: {fileID: 0}
+    maxHealth: 100
+    minHealth: 0
+    currentHealth: 100
 --- !u!212 &212733394548703042
 SpriteRenderer:
   m_ObjectHideFlags: 1
