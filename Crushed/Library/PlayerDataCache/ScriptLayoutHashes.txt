@@ -121,6 +121,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 a55f7b106e18f0d6f2ea00ab601cb083 Assembly-CSharp.dll:.ObjectManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Shredder
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -151,4 +152,3 @@ c919fa26b27f34c97993e921e2ffc37a Assembly-CSharp.dll:.PlayerController
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 0f040b54eb0092a9a9c971306ed8430e Assembly-CSharp.dll:.EnemyController
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PlaceName
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Shredder
