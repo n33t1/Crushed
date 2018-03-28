@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour {
 	public Sprite[] UpMovement;
 	public Sprite[] DownMovement;
 	private Vector3 distVector;
+	private Vector3 prevLoc = Vector3.zero;
 	public float spriteChangeDist;
 	public bool canMove;
 	private Rigidbody2D rigidBody;
@@ -42,17 +43,7 @@ public class EnemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			Health.CurrentHealth -= 10;
-		}
-
-		if (Input.GetKeyDown (KeyCode.E)) {
-			Health.CurrentHealth += 10;
-		}
-
-		if (canMove) {
-			Move ();
-		}
+			Move1 ();
 //		if (Input.GetKeyDown (KeyCode.Space)) {
 //			InvokeRepeating ("Fire", 0.00001f, firingRate);
 //		}
@@ -170,4 +161,68 @@ public class EnemyController : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+	void Move1 ()
+	{
+		if (Input.GetMouseButton (0)) {
+			Vector3 w = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			GetComponent<NavMeshAgent2D> ().destination = w;
+
+		}
+
+		Vector3 newPos = new Vector3 (transform.position.x, transform.position.y);
+		float newX = Mathf.Clamp (newPos.x, xmin, xmax);
+		float newY = Mathf.Clamp (newPos.y, ymin, ymax);
+
+		rigidBody.MovePosition (new Vector2 (newX, newY));
+
+		Vector3 curVel = (transform.position - prevLoc) / Time.deltaTime;
+		curVel = curVel.normalized;
+		if (Mathf.Abs (curVel.x) > Mathf.Abs (curVel.y)) {
+			if (curVel.x > 0) {
+				// it's moving right
+				this.GetComponent<SpriteRenderer> ().sprite = RightMovement [rIndex];
+				if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
+					rIndex++;
+					UpdateVector ();
+				}
+				if (rIndex >= RightMovement.Length) {
+					rIndex = 0;
+				}
+			} else if (curVel.x < 0) {
+				// it's moving left
+				this.GetComponent<SpriteRenderer> ().sprite = LeftMovement [lIndex];
+				if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
+					lIndex++;
+					UpdateVector ();
+				}
+				if (lIndex >= LeftMovement.Length) {
+					lIndex = 0;
+				}
+			}
+		} else {
+			if (curVel.y > 0) {
+				// it's moving up
+				this.GetComponent<SpriteRenderer> ().sprite = UpMovement [uIndex];
+				if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
+					uIndex++;
+					UpdateVector ();
+				}
+				if (uIndex >= UpMovement.Length) {
+					uIndex = 0;
+				}
+			} else if (curVel.y < 0) {
+				// it's moving down
+				this.GetComponent<SpriteRenderer> ().sprite = DownMovement [dIndex];
+				if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
+					dIndex++;
+					UpdateVector ();
+				}
+				if (dIndex >= DownMovement.Length) {
+					dIndex = 0;
+				}
+			}
+		}
+     	prevLoc = transform.position;
+		}
 }

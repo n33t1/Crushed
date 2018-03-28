@@ -51,6 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Navigation2D\Plugins\NavMeshAgent2D.cs" />
+     <Compile Include="Assets\Navigation2D\Plugins\NavMeshObstacle2D.cs" />
+     <Compile Include="Assets\Navigation2D\Plugins\NavMeshPath2D.cs" />
+     <Compile Include="Assets\Navigation2D\Plugins\NavMeshUtils2D.cs" />
+     <Compile Include="Assets\Navigation2D\TestScene\Move.cs" />
+     <Compile Include="Assets\Navigation2D\TestScene\MoveUpDown.cs" />
      <Compile Include="Assets\Scripts\BarScript.cs" />
      <Compile Include="Assets\Scripts\EnemyController.cs" />
      <Compile Include="Assets\Scripts\FountainAnimator.cs" />

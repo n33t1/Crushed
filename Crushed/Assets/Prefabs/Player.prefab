@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 50859189336806676}
   - component: {fileID: 61486699898526242}
   - component: {fileID: 114704156085320488}
+  - component: {fileID: 114683659423662518}
   m_Layer: 8
   m_Name: Player
   m_TagString: MainPlayer
@@ -164,7 +165,7 @@ MonoBehaviour:
   spriteChangeDist: 0.2
   canMove: 0
   Health:
-    bar: {fileID: 0}
+    healthBar: {fileID: 0}
     maxHealth: 100
     minHealth: 0
     currentHealth: 100
@@ -173,6 +174,21 @@ MonoBehaviour:
   bulletSpeed: 4
   firingRate: 1.5
   fireSound: {fileID: 8300000, guid: 40f55eb59f874b248831708eb6a3afac, type: 3}
+--- !u!114 &114683659423662518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1689291993039150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a99d2eab88b747a9bd011e3d849162f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  center: {x: 0, y: 0}
+  size: {x: 0.58, y: 1.18}
+  carve: 0
 --- !u!114 &114704156085320488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a296cc68fd9d0ca488009ca0e88e1f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentObject: 
 --- !u!212 &212908070543007620
 SpriteRenderer:
   m_ObjectHideFlags: 1
