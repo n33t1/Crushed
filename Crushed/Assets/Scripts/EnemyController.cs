@@ -16,16 +16,12 @@ public class EnemyController : MonoBehaviour {
 	public float spriteChangeDist;
 	public bool canMove;
 	private Rigidbody2D rigidBody;
+
 	[SerializeField]
 	public Stat Health;
-	//public GameObject bulletPrefab;
-	//public float bulletSpeed = 5f;
-	//public float firingRate = 5f;
-	//public float health = 250f;
+	private bool paused = false;
 
-	//public AudioClip fireSound;
 
-	// Use this for initialization
 	void Start () {
 		lIndex = rIndex = uIndex = dIndex = 0;
 		float distance = transform.position.z - Camera.main.transform.position.z;
@@ -43,14 +39,11 @@ public class EnemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-			Move1 ();
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			InvokeRepeating ("Fire", 0.00001f, firingRate);
-//		}
-//
-//		if (Input.GetKeyUp (KeyCode.Space)) {
-//			CancelInvoke("Fire");
-//		}
+		if (!paused)
+			Move ();
+		else {
+			GetComponent<NavMeshAgent2D> ().destination = transform.position;
+		}
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
@@ -71,85 +64,13 @@ public class EnemyController : MonoBehaviour {
 		distVector = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 	}
 
-	void Move ()
-	{
-		float xInput = Input.GetAxisRaw("Horizontal");
-		float yInput = Input.GetAxisRaw("Vertical");
-
-		Vector3 newPos = new Vector3(xInput, yInput);
-
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			UpdateVector ();
-			lIndex++;
-			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			UpdateVector ();
-			rIndex++;
-			if(rIndex >= RightMovement.Length) {rIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			UpdateVector ();
-			uIndex++;
-			if(uIndex >= UpMovement.Length) {uIndex = 0;}
-		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			UpdateVector ();
-			dIndex++;
-			if(dIndex >= DownMovement.Length) {dIndex = 0;}
-		}
-
-
-
-
-
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			this.GetComponent<SpriteRenderer> ().sprite = LeftMovement [lIndex];
-			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
-				lIndex++;
-				UpdateVector ();
-			}
-			if(lIndex >= LeftMovement.Length) {lIndex = 0;}
-		} 
-
-		else if (Input.GetKey (KeyCode.RightArrow)) {
-			this.GetComponent<SpriteRenderer> ().sprite = RightMovement [rIndex];
-			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
-				rIndex++;
-				UpdateVector ();
-			}
-			if(rIndex >= RightMovement.Length) {rIndex = 0;}
-		} 
-
-		else if (Input.GetKey (KeyCode.UpArrow)) {
-			this.GetComponent<SpriteRenderer> ().sprite = UpMovement [uIndex];
-			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
-				uIndex++;
-				UpdateVector ();
-			}
-			if(uIndex >= UpMovement.Length) {uIndex = 0;}
-		}
-
-		else if (Input.GetKey (KeyCode.DownArrow)) {
-			this.GetComponent<SpriteRenderer> ().sprite = DownMovement [dIndex];
-			if (Vector3.Distance (transform.position, distVector) > spriteChangeDist) {
-				dIndex++;
-				UpdateVector ();
-			}
-			if(dIndex >= DownMovement.Length) {dIndex = 0;}
-		}
-
-
-
-		float newX = transform.position.x + newPos.x * speed * Time.deltaTime;
-		newX = Mathf.Clamp(newX, xmin, xmax);
-		float newY = transform.position.y + newPos.y * speed * Time.deltaTime;
-		newY = Mathf.Clamp(newY, ymin, ymax);
-
-		rigidBody.MovePosition(new Vector2(newX, newY));
-
-	}
-
 	void OnTriggerEnter2D (Collider2D collider)
 	{
-		Debug.Log("Player collided with missile");
+		HitWithBullet(collider);
+	}
+
+	void HitWithBullet (Collider2D collider)
+	{
 		PlayerBullet missile = collider.gameObject.GetComponent<PlayerBullet> ();
 
 		if (missile) {
@@ -157,12 +78,24 @@ public class EnemyController : MonoBehaviour {
 			missile.Hit();
 		}
 
-		if (Health.CurrentHealth <= 0) {
-			Destroy(this.gameObject);
+		if (Health.CurrentHealth <= 0 && !paused) {
+			paused = true;
+			StartCoroutine("Wait");
 		}
 	}
 
-	void Move1 ()
+	IEnumerator Wait ()
+	{
+		Vector3 currentDest = GetComponent<NavMeshAgent2D> ().destination;
+		GetComponent<NavMeshAgent2D> ().destination = transform.position;
+		yield return new WaitForSeconds(30f);
+		GetComponent<NavMeshAgent2D> ().destination = currentDest;
+		paused = false;
+		Health.CurrentHealth = 100f;
+		yield break;
+	}
+
+	void Move ()
 	{
 		if (Input.GetMouseButton (0)) {
 			Vector3 w = Camera.main.ScreenToWorldPoint (Input.mousePosition);

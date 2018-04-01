@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour {
 
-	public float damage = 100f;
+	public float damage = 10f;
 
 	public Vector3 originPoint;
 

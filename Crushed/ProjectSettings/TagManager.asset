@@ -7,6 +7,8 @@ TagManager:
   - GardenObjects
   - PlayerBullet
   - MainPlayer
+  - Objects
+  - Girl
   layers:
   - Default
   - TransparentFX
