@@ -6,13 +6,21 @@ public class EnemyAI : MonoBehaviour {
 
 	// Use this for initialization
 	public GameObject[] objects;
-	private HashSet<GameObject> unexploredObjects;
-	private HashSet<GameObject> safeObjects;
+	private List<GameObject> unexploredObjects;
+	private List<GameObject> safeObjects;
+	private List<GameObject> romanceObjects;
+	private List<GameObject> happyObjects;
+
 	public MoodManager moodManager;
 
 	public GameObject currentObject;
 	[SerializeField]
 	private GameObject previousObject;
+
+	// Numerical values for mood
+	private float totalMood;
+	public float prevHappy;
+	public float prevRomance;
 
 	public GameObject Girl;
 
@@ -20,7 +28,7 @@ public class EnemyAI : MonoBehaviour {
 	bool moving = false;
 
 	//0 for friendship edges, 1 for romantic edges
-	Dictionary<GameObject, GameObject>[] Edges = new Dictionary<GameObject, GameObject>[2];
+	Dictionary<GameObject, List<GameObject>>[] Edges = new Dictionary<GameObject, List<GameObject>>[2];
 
 	Dictionary<Dictionary<GameObject, GameObject>, int> vaLUES;
 
@@ -31,6 +39,7 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		totalMood = moodManager.Mood.CurrentHappy + moodManager.Mood.CurrentRomantic; 
 		UpdateStatus ();
 		if (!moving) {
 			GoalBehaviour ();
@@ -39,7 +48,7 @@ public class EnemyAI : MonoBehaviour {
 
 	private void LoadObjects ()
 	{
-		unexploredObjects = new HashSet<GameObject>();
+		unexploredObjects = new List<GameObject>();
 		foreach(GameObject go in objects){
 			unexploredObjects.Add(go);
 		}
@@ -47,9 +56,9 @@ public class EnemyAI : MonoBehaviour {
 
 	private void UpdateStatus ()
 	{
-		if (moodManager.Mood.CurrentFriendly <= 50f && moodManager.Mood.CurrentRomantic <= 50f) {
+		if (Mathf.Pow(moodManager.Mood.CurrentHappy, 2) +  Mathf.Pow(moodManager.Mood.CurrentRomantic, 2) <= 5000f) {
 			status = "safe";
-		} else if (moodManager.Mood.CurrentFriendly <= 50f || moodManager.Mood.CurrentRomantic <= 50f) {
+		} else if (Mathf.Pow(moodManager.Mood.CurrentHappy, 2) +  Mathf.Pow(moodManager.Mood.CurrentRomantic, 2) <= 12500f) {
 			status = "danger";
 		} else {
 			status = "critical";
@@ -73,7 +82,7 @@ public class EnemyAI : MonoBehaviour {
 	{
 		if (unexploredObjects.Count > 0) {
 			int index = Random.Range (0, unexploredObjects.Count);
-			gameObject.GetComponent<NavMeshAgent2D>().destination = objects[index].transform.position;
+			gameObject.GetComponent<NavMeshAgent2D>().destination = unexploredObjects[index].transform.position;
 		}
 	}
 
@@ -96,9 +105,48 @@ public class EnemyAI : MonoBehaviour {
 		} 
 		else if (collider.gameObject.tag == "Girl" && currentObject != null) 
 		{
+			if (prevHappy > moodManager.Mood.CurrentHappy) {
+				if(!happyObjects.Contains(currentObject))
+					happyObjects.Add (currentObject);
+				if(!safeObjects.Contains(currentObject))
+					safeObjects.Add (currentObject);
+				if (moodManager.combo > 0) {
+					//wrtie the edge to the graph
+					if(!Edges[0].ContainsKey(previousObject))
+					{
+						Edges[0].Add(previousObject, null);
+						Edges[0][previousObject].Add(currentObject);
+					} else{
+						if(!Edges[0][previousObject].Contains(currentObject)){
+							Edges[0][previousObject].Add(currentObject);
+						}
+					}
+			}
+
+			if (prevRomance > moodManager.Mood.CurrentRomantic) {
+				if(!romanceObjects.Contains(currentObject))
+					romanceObjects.Add (currentObject);
+				if(!safeObjects.Contains(currentObject))
+					safeObjects.Add (currentObject);
+				if (moodManager.combo > 0) {
+					//wrtie the edge to the graph
+					if(!Edges[1].ContainsKey(previousObject))
+					{
+						Edges[1].Add(previousObject, null);
+						Edges[1][previousObject].Add(currentObject);
+					}
+					else{
+						if(!Edges[1][previousObject].Contains(currentObject)){
+							Edges[1][previousObject].Add(currentObject);
+						}
+					}
+				}
+			}
+				
 			previousObject = currentObject;
 			currentObject = null;
 			moving = false;
 		}
 	}
+}
 }

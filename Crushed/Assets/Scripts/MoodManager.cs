@@ -14,7 +14,7 @@ public class MoodManager : MonoBehaviour {
 	public LevelManager levelManager;
 
 	public MoodStat Mood;
-	private int combo = 0;
+	public int combo = 0;
 
 	void Start () {
 		
@@ -48,6 +48,8 @@ public class MoodManager : MonoBehaviour {
 		if (collider.gameObject.name == "Enemy") {
 			if (collider.gameObject.GetComponent<EnemyAI> ().currentObject != null) {
 				receivedObjectEnemy = collider.gameObject.GetComponent<EnemyAI> ().currentObject;
+				collider.gameObject.GetComponent<EnemyAI> ().prevHappy = Mood.CurrentHappy;
+				collider.gameObject.GetComponent<EnemyAI> ().prevRomance = Mood.CurrentRomantic;
 				DecreasePoints ();
 			}
 		}
