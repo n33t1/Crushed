@@ -10,8 +10,7 @@ public class EnemyAI : MonoBehaviour {
 	private HashSet<GameObject> safeObjects;
 	public MoodManager moodManager;
 
-	[SerializeField]
-	private GameObject currentObject;
+	public GameObject currentObject;
 	[SerializeField]
 	private GameObject previousObject;
 
@@ -22,6 +21,8 @@ public class EnemyAI : MonoBehaviour {
 
 	//0 for friendship edges, 1 for romantic edges
 	Dictionary<GameObject, GameObject>[] Edges = new Dictionary<GameObject, GameObject>[2];
+
+	Dictionary<Dictionary<GameObject, GameObject>, int> vaLUES;
 
 	void Start () {
 		LoadObjects ();
@@ -83,6 +84,7 @@ public class EnemyAI : MonoBehaviour {
 	void CriticalBehaviour ()
 	{
 	}
+		
 
 	void OnTriggerStay2D (Collider2D collider)
 	{

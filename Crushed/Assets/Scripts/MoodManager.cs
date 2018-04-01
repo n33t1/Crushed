@@ -9,6 +9,8 @@ public class MoodManager : MonoBehaviour {
 
 	private GameObject previousObject;
 	private GameObject receivedObject;
+	private GameObject previousObjectEnemy;
+	private GameObject receivedObjectEnemy;
 	public LevelManager levelManager;
 
 	public MoodStat Mood;
@@ -40,6 +42,15 @@ public class MoodManager : MonoBehaviour {
 			}
 		}
 
+	}
+
+	void OnTriggerEnter2D (Collider2D collider) {
+		if (collider.gameObject.name == "Enemy") {
+			if (collider.gameObject.GetComponent<EnemyAI> ().currentObject != null) {
+				receivedObjectEnemy = collider.gameObject.GetComponent<EnemyAI> ().currentObject;
+				DecreasePoints ();
+			}
+		}
 	}
 
 	private void IncreasePoints ()
@@ -131,4 +142,81 @@ public class MoodManager : MonoBehaviour {
 		previousObject = receivedObject;
 		receivedObject = null;
 	}
+
+
+	private void DecreasePoints ()
+	{
+		float points = receivedObjectEnemy.GetComponent<ObjectManager> ().objectPoints;
+
+		switch (receivedObjectEnemy.name) {
+		case "RedRose":
+			{
+				print (receivedObjectEnemy.name);
+				Mood.CurrentRomantic -= points;
+				combo = 0;
+				break;
+			}
+		case "BlueRose":
+			{
+				print (receivedObjectEnemy.name);
+				Mood.CurrentHappy -= points;
+				combo = 0;
+				break;
+			}
+		case "Strawberry":
+			{
+				print (receivedObjectEnemy.name);
+				Mood.CurrentRomantic -= points;
+				Mood.CurrentHappy -= points;
+				combo = 0;
+				break;
+			}
+		case "Chocolate":
+			{
+				print (receivedObjectEnemy.name);
+				if (previousObjectEnemy && previousObjectEnemy.name == "RedRose") {
+					Mood.CurrentRomantic -= 1.5f * points;
+					combo = 1;
+				} else {
+					Mood.CurrentRomantic -= points;
+					combo = 0;
+				}
+				break;
+			}
+		case "Dress":
+			{
+				print (receivedObjectEnemy.name);
+				if (previousObjectEnemy && previousObjectEnemy.name == "BlueRose") {
+					Mood.CurrentHappy -= 1.5f * points;
+					combo = 1;
+				} else {
+					Mood.CurrentHappy -= points;
+					combo = 0;
+				}
+				break;
+			}
+		case "Ring":
+			{
+				print (receivedObjectEnemy.name);
+				if (previousObjectEnemy && previousObjectEnemy.name == "RedRose") {
+					Mood.CurrentRomantic -= 1.5f * points;
+					combo = 1;
+				} else if (previousObjectEnemy && previousObjectEnemy.name == "Chocolate" && combo == 0) {
+					Mood.CurrentRomantic -= 1.5f * points;
+					Mood.CurrentHappy -= points;
+					combo = 1;
+				} 
+				else if (previousObjectEnemy && previousObjectEnemy.name == "Chocolate" && combo == 1) {
+					Mood.CurrentRomantic -= 3f * points;
+					Mood.CurrentHappy -= 2f * points;
+					combo = 2;
+				}
+				break;
+			}
+		}
+
+		previousObjectEnemy = receivedObjectEnemy;
+		receivedObjectEnemy = null;
+	
+  }
 }
