@@ -97,12 +97,6 @@ public class EnemyController : MonoBehaviour {
 
 	void Move ()
 	{
-		if (Input.GetMouseButton (0)) {
-			Vector3 w = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			GetComponent<NavMeshAgent2D> ().destination = w;
-
-		}
-
 		Vector3 newPos = new Vector3 (transform.position.x, transform.position.y);
 		float newX = Mathf.Clamp (newPos.x, xmin, xmax);
 		float newY = Mathf.Clamp (newPos.y, ymin, ymax);

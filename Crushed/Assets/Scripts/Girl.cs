@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Girl : MonoBehaviour {
 
 	// Use this for initialization
-	public Image image;
+	public Image playerImage;
+	public Image enemyImage;
 	public Text text;
 
 	void OnTriggerEnter2D (Collider2D collider)
@@ -17,16 +18,28 @@ public class Girl : MonoBehaviour {
 			text.text = "Press P to Propose";
 		}
 
-		if (collider.gameObject.name == "Player" && image.sprite != null) {
+		if (collider.gameObject.name == "Player" && playerImage.sprite != null) {
 			text.text = "Press E to give the object to the girl";
 		}
+
+
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
-		if (collider.gameObject.name == "Player" && Input.GetKeyDown (KeyCode.E)) {
-				image.sprite = null;
+		if (collider.gameObject.name == "Player" && Input.GetKey (KeyCode.E)) {
+				playerImage.sprite = null;
+				Color c = playerImage.color;
+        		c.a = 0;
+        		playerImage.color = c;
 				text.text = "";
+		}
+
+		if (collider.gameObject.name == "Enemy" && enemyImage != null) {
+				enemyImage.sprite = null;
+				Color c = enemyImage.color;
+        		c.a = 0;
+        		enemyImage.color = c;
 		}
 	}
 

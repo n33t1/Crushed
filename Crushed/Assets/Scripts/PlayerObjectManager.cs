@@ -20,9 +20,12 @@ public class PlayerObjectManager : MonoBehaviour {
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
-		if (Input.GetKeyDown (KeyCode.Q) && collider.gameObject.tag == "Objects") {
+		if (Input.GetKey (KeyCode.Q) && collider.gameObject.tag == "Objects") {
 			if (objectImage.sprite == null) {
 				objectImage.sprite = collider.gameObject.GetComponent<SpriteRenderer> ().sprite;
+				Color c = objectImage.color;
+        		c.a = 255;
+        		objectImage.color = c;
 				playerObject = collider.gameObject;
 				text.text = "";
 			} else {

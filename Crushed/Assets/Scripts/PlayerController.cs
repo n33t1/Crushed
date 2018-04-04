@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour {
 	private void UpdateVector ()
 	{
 		distVector = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+
 	}
 
 	void Move ()
