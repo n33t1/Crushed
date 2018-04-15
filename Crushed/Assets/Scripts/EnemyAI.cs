@@ -106,6 +106,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void WinningBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.75f) {
 			SafeBehaviour ();
@@ -116,6 +117,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void SafeBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		if (unexploredObjects.Count > 0) {
 			int index = Random.Range (0, unexploredObjects.Count);
 			gameObject.GetComponent<NavMeshAgent2D>().destination = unexploredObjects[index].transform.position;
@@ -125,37 +127,38 @@ public class EnemyAI : MonoBehaviour {
 
 	void DangerBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.25f) {
 			SafeBehaviour ();
 		} else {
-			gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+			if (!executingCombo) {
+				if (moodManager.Mood.CurrentHappy > moodManager.Mood.CurrentRomantic) {
+					if (MaxHappyCombo.Count > 0) {
+						executingCombo = true;
+						comboIndex = 0;
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxHappyCombo [0].gameObject.transform.position;
+					} else {
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+					}
+				} else {
+					if (MaxRomanticCombo.Count > 0) {
+						executingCombo = true;
+						comboIndex = 1;
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxRomanticCombo [0].gameObject.transform.position;
+					} else {
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+					}
+				}
+			} else {
+				gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+			}
 		}
 	}
 
 	void CriticalBehaviour ()
 	{
-		if (!executingCombo) {
-			if (moodManager.Mood.CurrentHappy > moodManager.Mood.CurrentRomantic) {
-				if (MaxHappyCombo.Count > 0) {
-					executingCombo = true;
-					comboIndex = 0;
-					gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxHappyCombo [0].gameObject.transform.position;
-				} else {
-					gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
-				}
-			} else {
-				if (MaxRomanticCombo.Count > 0) {
-					executingCombo = true;
-					comboIndex = 1;
-					gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxRomanticCombo [0].gameObject.transform.position;
-				} else {
-					gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
-				}
-			}
-		} else {
-			gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
-		}
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
