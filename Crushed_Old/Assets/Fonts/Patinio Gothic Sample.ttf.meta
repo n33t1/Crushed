@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: e2d61d9ffe7f57a47b3598a8d9329b1d
+timeCreated: 1521668256
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Patinio Gothic
+  fontNames:
+  - Patinio Gothic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
