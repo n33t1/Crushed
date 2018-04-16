@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour {
 	private List<GameObject> safeObjects;
 	private List<GameObject> romanceObjects;
 	private List<GameObject> happyObjects;
-
+	public Transform player;
 	public MoodManager moodManager;
 
 	public Image image;
@@ -26,10 +26,13 @@ public class EnemyAI : MonoBehaviour {
 	public float prevRomance;
 
 	public GameObject Girl;
+	public float bulletSpeed = 2f;
+	public AudioClip fireSound;
+	public float fireRate = 3f;
 
 	bool executingCombo = false;
 	int comboIndex;
-
+	public GameObject bulletPrefab;
 	private string status = "safe";
 	bool moving = false;
 
@@ -37,6 +40,7 @@ public class EnemyAI : MonoBehaviour {
 	float maxHappyComboVal;
 	List<GameObject> MaxRomanticCombo;
 	float maxRomanticComboVal;
+	bool firing = false;
 
 	List<GameObject> TempList;
 	float tempComboVal = 0;
@@ -106,6 +110,8 @@ public class EnemyAI : MonoBehaviour {
 
 	void WinningBehaviour ()
 	{
+		firing = false;
+		CancelInvoke();
 		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.75f) {
@@ -117,6 +123,8 @@ public class EnemyAI : MonoBehaviour {
 
 	void SafeBehaviour ()
 	{
+		firing = false;
+		CancelInvoke();
 		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		if (unexploredObjects.Count > 0) {
 			int index = Random.Range (0, unexploredObjects.Count);
@@ -127,6 +135,8 @@ public class EnemyAI : MonoBehaviour {
 
 	void DangerBehaviour ()
 	{
+		firing = false;
+		CancelInvoke();
 		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.25f) {
@@ -158,20 +168,44 @@ public class EnemyAI : MonoBehaviour {
 
 	void CriticalBehaviour ()
 	{
-		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 0.5f;
+		gameObject.GetComponent<NavMeshAgent2D> ().destination = player.position - Vector3.one;
+		if (!firing) {
+			InvokeRepeating ("Fire", 0.01f, fireRate);
+			firing = true;
+		}
+		moving = false;
+	}
+
+	void Fire ()
+	{
+		print("in fire");
+		if (EnemyBullet.usedBullets < EnemyBullet.maxBullets) {
+			GameObject bullet = Instantiate (bulletPrefab, transform.position, Quaternion.identity) as GameObject;
+			Vector2 fireDirection = player.position - transform.position;
+			fireDirection = fireDirection.normalized;
+			print(fireDirection.x + " " + fireDirection.y);
+			bullet.GetComponent<EnemyBullet> ().originPoint = transform.position;
+			bullet.GetComponent<Rigidbody2D> ().velocity = fireDirection * bulletSpeed;
+			if (fireDirection != Vector2.zero) {
+				float angle = Mathf.Atan2 (fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
+				bullet.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+			}
+			AudioSource.PlayClipAtPoint (fireSound, transform.position);
+		}
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
-		if (collider.gameObject.tag == "Objects" && currentObject == null 
-			&& gameObject.GetComponent<NavMeshAgent2D>().velocity.magnitude == 0f) {
+		if (collider.gameObject.tag == "Objects" && currentObject == null
+		    && gameObject.GetComponent<NavMeshAgent2D> ().velocity.magnitude == 0f) {
 			currentObject = collider.gameObject;
 			gameObject.GetComponent<NavMeshAgent2D> ().destination = Girl.transform.position;
 			if (image.sprite == null) {
 				image.sprite = collider.gameObject.GetComponent<SpriteRenderer> ().sprite;
 				Color c = image.color;
-        		c.a = 255;
-        		image.color = c;
+				c.a = 255;
+				image.color = c;
 			}
 		} else if (collider.gameObject.tag == "Girl" && currentObject != null) {
 			if (status == "safe" || status == "danger") {
@@ -180,6 +214,8 @@ public class EnemyAI : MonoBehaviour {
 			previousObject = currentObject;
 			currentObject = null;
 			moving = false;
+		} else if (collider.gameObject.tag == "Objects" && currentObject != null) {
+			gameObject.GetComponent<NavMeshAgent2D> ().destination = Girl.transform.position;
 		}
 	}
 

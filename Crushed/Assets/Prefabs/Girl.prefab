@@ -22,9 +22,12 @@ GameObject:
   - component: {fileID: 212745687020996012}
   - component: {fileID: 60535144696227424}
   - component: {fileID: 61904728895673050}
+  - component: {fileID: 114440563553425214}
+  - component: {fileID: 114736054489819174}
+  - component: {fileID: 114446450867329930}
   m_Layer: 0
   m_Name: Girl
-  m_TagString: Untagged
+  m_TagString: Girl
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +98,60 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.62222224, y: 0.55518866}
   m_EdgeRadius: 0
+--- !u!114 &114440563553425214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1863802499844264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a99d2eab88b747a9bd011e3d849162f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  center: {x: 0, y: -0.37}
+  size: {x: 0.2, y: 0.19}
+  carve: 0
+--- !u!114 &114446450867329930
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1863802499844264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f72a159d2de58644eb1e991f20526b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerImage: {fileID: 0}
+  enemyImage: {fileID: 0}
+  text: {fileID: 0}
+--- !u!114 &114736054489819174
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1863802499844264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295f86797f48fb843b22fa9ef9278c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelManager: {fileID: 0}
+  Mood:
+    moodBar: {fileID: 0}
+    maxFriendly: 100
+    minFriendly: 0
+    maxHappy: 100
+    minHappy: 0
+    maxRomantic: 100
+    minRomantic: 0
+    currentFriendly: 0
+    currentHappy: 50
+    currentRomantic: 0
+  combo: 0
+  playerCombo: 0
 --- !u!212 &212745687020996012
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -9,6 +9,7 @@ TagManager:
   - MainPlayer
   - Objects
   - Girl
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

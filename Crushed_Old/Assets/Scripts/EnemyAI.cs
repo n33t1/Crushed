@@ -33,6 +33,14 @@ public class EnemyAI : MonoBehaviour {
 	private string status = "safe";
 	bool moving = false;
 
+	List<GameObject> MaxHappyCombo;
+	float maxHappyComboVal;
+	List<GameObject> MaxRomanticCombo;
+	float maxRomanticComboVal;
+
+	List<GameObject> TempList;
+	float tempComboVal = 0;
+
 	//0 for friendship edges, 1 for romantic edges
 	Dictionary<GameObject, List<GameObject>>[] Edges = new Dictionary<GameObject, List<GameObject>>[2];
 
@@ -40,6 +48,9 @@ public class EnemyAI : MonoBehaviour {
 		safeObjects = new List<GameObject>();
 		romanceObjects = new List<GameObject>();
 		happyObjects = new List<GameObject>();
+		TempList = new List<GameObject>();
+		MaxHappyCombo = new List<GameObject>();
+		MaxRomanticCombo = new List<GameObject>();
 		LoadObjects ();
 	}
 	
@@ -95,6 +106,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void WinningBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.75f) {
 			SafeBehaviour ();
@@ -105,6 +117,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void SafeBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.0f;
 		if (unexploredObjects.Count > 0) {
 			int index = Random.Range (0, unexploredObjects.Count);
 			gameObject.GetComponent<NavMeshAgent2D>().destination = unexploredObjects[index].transform.position;
@@ -114,18 +127,39 @@ public class EnemyAI : MonoBehaviour {
 
 	void DangerBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
 		float probability = (float)Random.Range (0, 100)/100f;
 		if (probability <= 0.25f) {
 			SafeBehaviour ();
 		} else {
-			gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+			if (!executingCombo) {
+				if (moodManager.Mood.CurrentHappy > moodManager.Mood.CurrentRomantic) {
+					if (MaxHappyCombo.Count > 0) {
+						executingCombo = true;
+						comboIndex = 0;
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxHappyCombo [0].gameObject.transform.position;
+					} else {
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+					}
+				} else {
+					if (MaxRomanticCombo.Count > 0) {
+						executingCombo = true;
+						comboIndex = 1;
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = MaxRomanticCombo [0].gameObject.transform.position;
+					} else {
+						gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+					}
+				}
+			} else {
+				gameObject.GetComponent<NavMeshAgent2D> ().destination = NextObjectPosition ();
+			}
 		}
 	}
 
 	void CriticalBehaviour ()
 	{
+		gameObject.GetComponent<NavMeshAgent2D> ().speed = 1.5f;
 	}
-		
 
 	void OnTriggerStay2D (Collider2D collider)
 	{
@@ -168,6 +202,21 @@ public class EnemyAI : MonoBehaviour {
 	{
 		if (Edges [comboIndex] [previousObject].Count == 0) {
 			executingCombo = false;
+			if (comboIndex == 0) {
+				if (maxHappyComboVal < tempComboVal) {
+					MaxHappyCombo.Clear ();
+					MaxHappyCombo.AddRange (TempList);
+					maxHappyComboVal = tempComboVal;
+				}
+			} else {
+				if (maxRomanticComboVal < tempComboVal) {
+					MaxRomanticCombo.Clear ();
+					MaxRomanticCombo.AddRange (TempList);
+					maxRomanticComboVal = tempComboVal;
+				}
+			}
+			TempList.Clear ();
+			tempComboVal = 0f;
 			return NextObjectPosition ();
 		} else {
 			int maxValueIndex = 0;
@@ -179,6 +228,8 @@ public class EnemyAI : MonoBehaviour {
 				}
 			}
 
+			TempList.Add(Edges [comboIndex] [previousObject] [maxValueIndex].gameObject);
+			tempComboVal += Edges [comboIndex] [previousObject] [maxValueIndex].gameObject.GetComponent<ObjectManager>().objectPoints;
 			return Edges [comboIndex] [previousObject] [maxValueIndex].gameObject.transform.position;
 		}
 	}
@@ -192,6 +243,8 @@ public class EnemyAI : MonoBehaviour {
 					if (Edges [0].ContainsKey (happyObjects [ind])) {
 						comboIndex = 0;
 						executingCombo = true;
+						TempList.Add(Edges [0] [happyObjects [ind]] [0].gameObject);
+						tempComboVal += Edges [0] [happyObjects [ind]] [0].gameObject.GetComponent<ObjectManager>().objectPoints;
 						return Edges [0] [happyObjects [ind]] [0].gameObject.transform.position;
 					}
 				}
@@ -212,7 +265,9 @@ public class EnemyAI : MonoBehaviour {
 					if (Edges [1].ContainsKey (romanceObjects [ind])) {
 						comboIndex = 1;
 						executingCombo = true;
-						return Edges [0] [romanceObjects [ind]] [0].gameObject.transform.position;
+						TempList.Add(Edges [1] [romanceObjects [ind]] [0].gameObject);
+						tempComboVal += Edges [1] [romanceObjects [ind]] [0].gameObject.GetComponent<ObjectManager>().objectPoints;
+						return Edges [1] [romanceObjects [ind]] [0].gameObject.transform.position;
 					}
 				}
 			}

@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 	public bool canMove;
 	private Rigidbody2D rigidBody;
 	private Vector3 newPos;
+	public LevelManager levelManager;
 
 	private Vector2 moveDirection = new Vector2(1f, 0f);
 
@@ -183,7 +184,12 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D collider)
 	{
-		PlayerBullet missile = collider.gameObject.GetComponent<PlayerBullet> ();
+		HitWithBullet(collider);
+	}
+
+	void HitWithBullet (Collider2D collider)
+	{
+		EnemyBullet missile = collider.gameObject.GetComponent<EnemyBullet> ();
 
 		if (missile) {
 			Health.CurrentHealth -= missile.GetDamage ();
@@ -191,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if (Health.CurrentHealth <= 0) {
-			Destroy(this.gameObject);
+			levelManager.LoadLevel("Lose Screen");
 		}
 	}
 

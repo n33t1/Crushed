@@ -23,7 +23,8 @@ GameObject:
   - component: {fileID: 114442866781176444}
   - component: {fileID: 50758568088701372}
   - component: {fileID: 60060288918572868}
-  - component: {fileID: 61767757605827654}
+  - component: {fileID: 114856293167472620}
+  - component: {fileID: 114425472046538602}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -38,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721386327666810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -55,7 +56,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -89,35 +90,30 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -0.21274453, y: 0.10434635}
-      - {x: -0.25011304, y: -0.32629943}
-      - {x: 0.250113, y: -0.32629943}
+      - {x: -0.250113, y: -0.42694807}
+      - {x: 0.25011253, y: -0.42694807}
       - {x: 0.275, y: 0.6125}
       - {x: -0.275, y: 0.6125}
---- !u!61 &61767757605827654
-BoxCollider2D:
+--- !u!114 &114425472046538602
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1721386327666810}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0062217563, y: -0.46663165}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.55, y: 1.225}
-    newSize: {x: 0.55, y: 1.225}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5375565, y: 0.29173672}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad705bba33f3642f4bc26cd844e12c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  angularSpeed: 120
+  acceleration: 8
+  stoppingDistance: 0
+  autoBraking: 1
+  radius: 0.2
+  quality: 4
+  priority: 50
+  autoRepath: 1
 --- !u!114 &114442866781176444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,12 +167,44 @@ MonoBehaviour:
   - {fileID: 21300050, guid: 22c2af54094bd3d41b297c04ed82e42c, type: 3}
   - {fileID: 21300052, guid: 22c2af54094bd3d41b297c04ed82e42c, type: 3}
   spriteChangeDist: 0.1
-  canMove: 1
+  canMove: 0
   Health:
-    bar: {fileID: 0}
+    healthBar: {fileID: 0}
     maxHealth: 100
     minHealth: 0
     currentHealth: 100
+--- !u!114 &114856293167472620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721386327666810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd10bbf18584ca14c8608e1d61d943a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  player: {fileID: 0}
+  moodManager: {fileID: 0}
+  image: {fileID: 0}
+  currentObject: {fileID: 0}
+  previousObject: {fileID: 0}
+  prevHappy: 0
+  prevRomance: 0
+  Girl: {fileID: 0}
+  bulletSpeed: 5
+  fireSound: {fileID: 8300000, guid: 40f55eb59f874b248831708eb6a3afac, type: 3}
+  fireRate: 3
+  bulletPrefab: {fileID: 1469190212456046, guid: f79c8612793b0da4a94eb2450c0d9991,
+    type: 2}
 --- !u!212 &212733394548703042
 SpriteRenderer:
   m_ObjectHideFlags: 1

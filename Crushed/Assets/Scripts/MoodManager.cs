@@ -12,7 +12,6 @@ public class MoodManager : MonoBehaviour {
 	private GameObject previousObjectEnemy;
 	private GameObject receivedObjectEnemy;
 	public LevelManager levelManager;
-
 	public MoodStat Mood;
 	public int combo = 0;
 	public int playerCombo = 0;
@@ -27,6 +26,8 @@ public class MoodManager : MonoBehaviour {
 		if ((Mood.CurrentHappy == 0f && Mood.CurrentRomantic == 0f) || Mood.CurrentFriendly == 100f) {
 			levelManager.LoadLevel("Lose Screen");
 		}
+
+
 	}
 
 	void OnTriggerStay2D (Collider2D collider)
