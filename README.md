@@ -33,6 +33,7 @@ Keep in mind, your goal is to make Happiness and Mood Bar reach 100% and win the
 
 ## Team
 [Harshit Gupta](https://github.com/harshit0921): level design, storytelling, goal-oriented behavior, optimized greedy search
+
 [Amber Han](https://github.com/n33t1): character design, implementation for pathfinding using Navmesh, general implementation, player combat
 
 ## Game Mechanics
