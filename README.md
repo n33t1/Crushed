@@ -1,4 +1,4 @@
-# Crush
+# Crushed
 Crushed is a RPG/Simulation game where a boy is trying to impress his crush. The player will play the role of the boy and collect objects to win the heart of the girl while fighting against the ex-boyfriend. The game will implement AI techniques such as A*, Goal-Orientation Behavior and Optimized Greedy Search.
 
 Repository Link : https://github.com/n33t1/Crushed.git
