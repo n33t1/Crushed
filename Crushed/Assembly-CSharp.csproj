@@ -67,7 +67,6 @@
      <Compile Include="Assets\Scripts\MoodManager.cs" />
      <Compile Include="Assets\Scripts\MoodScript.cs" />
      <Compile Include="Assets\Scripts\MoodStat.cs" />
-     <Compile Include="Assets\Scripts\MusicPlayer.cs" />
      <Compile Include="Assets\Scripts\ObjectManager.cs" />
      <Compile Include="Assets\Scripts\PlaceName.cs" />
      <Compile Include="Assets\Scripts\PlayerBullet.cs" />

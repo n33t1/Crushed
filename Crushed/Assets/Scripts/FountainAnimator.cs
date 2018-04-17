@@ -7,18 +7,10 @@ public class FountainAnimator : MonoBehaviour {
 	public Sprite[] fountain;
 	private int spriteIndex = 0;
 	public float waitTime;
-	//private bool isCoroutineExecuting = true;
 
 	// Use this for initialization
 	void Start () {
 		InvokeRepeating("ChangeSprite", 0.00001f, waitTime);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-
-
 	}
 
 	void ChangeSprite ()

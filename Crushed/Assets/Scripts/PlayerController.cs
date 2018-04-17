@@ -17,20 +17,14 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D rigidBody;
 	private Vector3 newPos;
 	public LevelManager levelManager;
-
 	private Vector2 moveDirection = new Vector2(1f, 0f);
-
 	[SerializeField]
 	public Stat Health;
-
 	public GameObject bulletPrefab;
 	public float bulletSpeed = 5f;
 	public float firingRate = 5f;
-	//public float health = 250f;
-
 	public AudioClip fireSound;
 
-	// Use this for initialization
 	void Start () {
 		lIndex = rIndex = uIndex = dIndex = 0;
 		float distance = transform.position.z - Camera.main.transform.position.z;

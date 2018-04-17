@@ -448,7 +448,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1489072135}
   - component: {fileID: 1489072134}
-  - component: {fileID: 1489072133}
   m_Layer: 0
   m_Name: Music Player
   m_TagString: Untagged
@@ -456,17 +455,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1489072133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1489072132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43bccfdab8febd7459a0ce3984e8c7d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1489072134
 AudioSource:
   m_ObjectHideFlags: 0
@@ -641,8 +629,9 @@ MonoBehaviour:
     and win.\r\n10.  Giving same object again and again will raise the friendship
     bar. If friendship bar goes to full, you get Friendzoned.\r\n\r\nLose Conditions:\r\n1.
     \  Both the happiness and romance bars go to 0%\r\n2.   Friendship bar goes to
-    100% and you get FRIENDZONED.\r\n\r\nWin Conditions:\r\n1.   When both Happiness
-    and Friendship bars are 100%, go to the girl and press P to propose and win.\r"
+    100% and you get FRIENDZONED.\r\n3.   Your Health Bar goes to 0%\n\r\nWin Conditions:\r\n1.
+    \  When both Happiness and Friendship bars are 100%, go to the girl and press
+    P to propose and win.\r"
 --- !u!222 &1596072356
 CanvasRenderer:
   m_ObjectHideFlags: 0

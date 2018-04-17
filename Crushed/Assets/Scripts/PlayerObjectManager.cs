@@ -9,14 +9,6 @@ public class PlayerObjectManager : MonoBehaviour {
 	public GameObject playerObject;
 	public Image objectImage;
 	public Text text;
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	void OnTriggerStay2D (Collider2D collider)
 	{

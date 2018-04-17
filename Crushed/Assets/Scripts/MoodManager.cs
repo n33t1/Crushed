@@ -15,10 +15,6 @@ public class MoodManager : MonoBehaviour {
 	public MoodStat Mood;
 	public int combo = 0;
 	public int playerCombo = 0;
-
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update ()
@@ -68,21 +64,18 @@ public class MoodManager : MonoBehaviour {
 		switch (receivedObject.name) {
 		case "RedRose":
 			{
-				print (receivedObject.name);
 				Mood.CurrentRomantic += points;
 				playerCombo = 0;
 				break;
 			}
 		case "BlueRose":
 			{
-				print (receivedObject.name);
 				Mood.CurrentHappy += points;
 				playerCombo = 0;
 				break;
 			}
 		case "BlackRose":
 			{
-				print (receivedObject.name);
 				Mood.CurrentRomantic -= 4f * points;
 				Mood.CurrentHappy -= 4f * points;
 				playerCombo = 0;
@@ -90,7 +83,6 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Strawberry":
 			{
-				print (receivedObject.name);
 				Mood.CurrentRomantic += points;
 				Mood.CurrentHappy += points;
 				playerCombo = 0;
@@ -98,7 +90,6 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Chocolate":
 			{
-				print (receivedObject.name);
 				if (previousObject && previousObject.name == "RedRose") {
 					Mood.CurrentRomantic += 1.5f * points;
 					playerCombo = 1;
@@ -110,7 +101,6 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Dress":
 			{
-				print (receivedObject.name);
 				if (previousObject && previousObject.name == "BlueRose") {
 					Mood.CurrentHappy += 1.5f * points;
 					playerCombo = 1;
@@ -122,7 +112,6 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Ring":
 			{
-				print (receivedObject.name);
 				if (previousObject && previousObject.name == "RedRose") {
 					Mood.CurrentRomantic += 1.5f * points;
 					playerCombo = 1;
@@ -147,7 +136,6 @@ public class MoodManager : MonoBehaviour {
 		receivedObject = null;
 	}
 
-
 	private void DecreasePoints ()
 	{
 		float points = receivedObjectEnemy.GetComponent<ObjectManager> ().objectPoints;
@@ -155,21 +143,18 @@ public class MoodManager : MonoBehaviour {
 		switch (receivedObjectEnemy.name) {
 		case "RedRose":
 			{
-				print (receivedObjectEnemy.name);
 				Mood.CurrentRomantic -= points;
 				combo = 0;
 				break;
 			}
 		case "BlueRose":
 			{
-				print (receivedObjectEnemy.name);
 				Mood.CurrentHappy -= points;
 				combo = 0;
 				break;
 			}
 		case "Strawberry":
 			{
-				print (receivedObjectEnemy.name);
 				Mood.CurrentRomantic -= points;
 				Mood.CurrentHappy -= points;
 				combo = 0;
@@ -177,7 +162,6 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Chocolate":
 			{
-				print (receivedObjectEnemy.name);
 				if (previousObjectEnemy && previousObjectEnemy.name == "RedRose") {
 					Mood.CurrentRomantic -= 1.5f * points;
 					combo = 1;
@@ -189,9 +173,7 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Dress":
 			{
-				print (receivedObjectEnemy.name);
 				if (previousObjectEnemy && previousObjectEnemy.name == "BlueRose") {
-					print ("combo");
 					Mood.CurrentHappy -= 1.5f * points;
 					combo = 1;
 				} else {
@@ -202,13 +184,10 @@ public class MoodManager : MonoBehaviour {
 			}
 		case "Ring":
 			{
-				print (receivedObjectEnemy.name);
 				if (previousObjectEnemy && previousObjectEnemy.name == "RedRose") {
-					print ("combo");
 					Mood.CurrentRomantic -= 1.5f * points;
 					combo = 1;
 				} else if (previousObjectEnemy && previousObjectEnemy.name == "Chocolate" && combo == 0) {
-					print ("combo");
 					Mood.CurrentRomantic -= 1.5f * points;
 					Mood.CurrentHappy -= points;
 					combo = 1;

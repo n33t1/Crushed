@@ -13,40 +13,31 @@ public class EnemyAI : MonoBehaviour {
 	private List<GameObject> happyObjects;
 	public Transform player;
 	public MoodManager moodManager;
-
 	public Image image;
-
 	public GameObject currentObject;
 	[SerializeField]
 	private GameObject previousObject;
-
-	// Numerical values for mood
-	private float totalMood;
 	public float prevHappy;
 	public float prevRomance;
-
 	public GameObject Girl;
 	public float bulletSpeed = 2f;
 	public AudioClip fireSound;
 	public float fireRate = 3f;
-
-	bool executingCombo = false;
-	int comboIndex;
+	private bool executingCombo = false;
+	private int comboIndex;
 	public GameObject bulletPrefab;
 	private string status = "safe";
-	bool moving = false;
-
-	List<GameObject> MaxHappyCombo;
-	float maxHappyComboVal;
-	List<GameObject> MaxRomanticCombo;
-	float maxRomanticComboVal;
-	bool firing = false;
-
-	List<GameObject> TempList;
-	float tempComboVal = 0;
+	private bool moving = false;
+	private List<GameObject> MaxHappyCombo;
+	private float maxHappyComboVal;
+	private List<GameObject> MaxRomanticCombo;
+	private float maxRomanticComboVal;
+	private bool firing = false;
+	private List<GameObject> TempList;
+	private float tempComboVal = 0;
 
 	//0 for friendship edges, 1 for romantic edges
-	Dictionary<GameObject, List<GameObject>>[] Edges = new Dictionary<GameObject, List<GameObject>>[2];
+	private Dictionary<GameObject, List<GameObject>>[] Edges = new Dictionary<GameObject, List<GameObject>>[2];
 
 	void Start () {
 		safeObjects = new List<GameObject>();
@@ -61,7 +52,6 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		totalMood = moodManager.Mood.CurrentHappy + moodManager.Mood.CurrentRomantic; 
 		UpdateStatus ();
 		if (!moving) {
 			GoalBehaviour ();
@@ -179,12 +169,10 @@ public class EnemyAI : MonoBehaviour {
 
 	void Fire ()
 	{
-		print("in fire");
 		if (EnemyBullet.usedBullets < EnemyBullet.maxBullets) {
 			GameObject bullet = Instantiate (bulletPrefab, transform.position, Quaternion.identity) as GameObject;
 			Vector2 fireDirection = player.position - transform.position;
 			fireDirection = fireDirection.normalized;
-			print(fireDirection.x + " " + fireDirection.y);
 			bullet.GetComponent<EnemyBullet> ().originPoint = transform.position;
 			bullet.GetComponent<Rigidbody2D> ().velocity = fireDirection * bulletSpeed;
 			if (fireDirection != Vector2.zero) {
