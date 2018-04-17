@@ -83,6 +83,14 @@ Keep in mind, your goal is to make Happiness and Mood Bar reach 100% and win the
 
 ## Evaluation
 We had a play testing night with 10 volunteers. We received mostly positive feedbacks on the game experience with some bugs on NPC movement reported.
+* Postive Feedbacks:
+  * "I really liked the concept. It is simple and super easy to learn the general idea, and it allows the player to find more combos."
+  * "The AI was easy and complex at the same time. As I proceeded, the enemy started moving faster and also started shooting which made it difficult to win towards the end."
+  * "The AI killed me with bullet when I was about to win. It is a challenging game."
+* Negative Feedbacks:
+  * "The enemy takes a lot of time to get great combos. It executes good combos towards the end when the game is almost over."
+  * "There are some movement bugs for the AI. Like it gets stuck when there is very less space to move between player and girl."
+  * "Kinda hard to find the combos as the AI decrease the bars at the same time. You should give some tips."
 
 ## Lessons learned
 * While we were trying to implement the adaptive learning, we realized the optimized greedy search is more relevant to our game than machine learning approach. We realized we can achieve similar effects with simpler approach. Complex algorithms do not mean high entertainments. 
